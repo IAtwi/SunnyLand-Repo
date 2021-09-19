@@ -20,6 +20,7 @@ public class Player : Character
 	private ParticleSystem dust;
 
 	private float crouchTimer = 1f;
+	private const float maxCrouchTimer = 1.5f;
 	private float addedTimeOnCrouch = 0.7f;
 	private float velocityAddedWhenDamaged = 7f;
 	private float timeForHurt = 0.65f;
@@ -69,7 +70,7 @@ public class Player : Character
 		if(m_Grounded && crouch)
         {
 			crouchTimer += addedTimeOnCrouch * Time.deltaTime;
-			if (crouchTimer >= 1.5f)
+			if (crouchTimer >= maxCrouchTimer)
 				crouchTimer = 1.5f;
 		}
 		else

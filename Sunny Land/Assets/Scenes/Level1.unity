@@ -18811,26 +18811,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4781015228919448780, guid: 2db325aa066c10b4293f520f8a7633df, type: 3}
-      propertyPath: lengthInSec
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4781015228919448780, guid: 2db325aa066c10b4293f520f8a7633df, type: 3}
-      propertyPath: moveWithTransform
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4781015228919448780, guid: 2db325aa066c10b4293f520f8a7633df, type: 3}
-      propertyPath: VelocityModule.inWorldSpace
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4781015228919448780, guid: 2db325aa066c10b4293f520f8a7633df, type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 4781015228919448780, guid: 2db325aa066c10b4293f520f8a7633df, type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8024090434911445282, guid: 2db325aa066c10b4293f520f8a7633df, type: 3}
       propertyPath: m_Name
       value: Player
