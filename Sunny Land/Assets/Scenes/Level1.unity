@@ -18872,6 +18872,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8024090434911445285, guid: 2db325aa066c10b4293f520f8a7633df, type: 3}
+      propertyPath: m_CrouchSpeed
+      value: 0.36
+      objectReference: {fileID: 0}
     - target: {fileID: 8024090434911445305, guid: 2db325aa066c10b4293f520f8a7633df, type: 3}
       propertyPath: m_RootOrder
       value: 1

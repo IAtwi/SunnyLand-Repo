@@ -18,7 +18,8 @@ public class Player : Character
 	[SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
 	
 
-
+	//private float crouchTimer = 1f;
+	//private float addedTimeOnCrouch = 0.1f;
 	private float velocityAddedWhenDamaged = 7f;
 	private float timeForHurt = 0.65f;
 	private bool isTakingDamage = false;
@@ -178,6 +179,7 @@ public class Player : Character
 			// If crouching
 			if (crouch)
 			{
+
 				if (!m_wasCrouching)
 				{
 					m_wasCrouching = true;
