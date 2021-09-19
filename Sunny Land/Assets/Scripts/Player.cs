@@ -4,22 +4,23 @@ using System.Collections;
 
 public class Player : Character
 {
+
 	private enum State { idle,run, crouch, jump,fall,hurt};
 	private State playerState = State.idle;
 
-	//[SerializeField] private float m_JumpForce = 400f;                        // Amount of force added when the player jumps.
-	[SerializeField] private float jumpVelocity = 6f;
+	[SerializeField] private float jumpVelocity = 5f;
 	[Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;          // Amount of maxSpeed applied to crouching movement. 1 = 100%
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
 	[SerializeField] private bool m_AirControl = true;                          // Whether or not a player can steer while jumping;
 	[SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
-	[SerializeField] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
-	[SerializeField] private Transform m_CeilingCheck;                          // A position marking where to check for ceilings
 	[SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
-	
 
-	//private float crouchTimer = 1f;
-	//private float addedTimeOnCrouch = 0.1f;
+	private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
+	private Transform m_CeilingCheck;                          // A position marking where to check for ceilings
+	private ParticleSystem dust;
+
+	private float crouchTimer = 1f;
+	private float addedTimeOnCrouch = 0.7f;
 	private float velocityAddedWhenDamaged = 7f;
 	private float timeForHurt = 0.65f;
 	private bool isTakingDamage = false;
@@ -47,6 +48,9 @@ public class Player : Character
 		rigidBody = GetComponent<Rigidbody2D>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		animator = GetComponent<Animator>();
+		dust = transform.GetChild(2).GetComponent<ParticleSystem>();
+		m_CeilingCheck = transform.GetChild(0).transform;
+		m_GroundCheck = transform.GetChild(1).transform;
 
 
 		if (OnLandEvent == null)
@@ -62,6 +66,16 @@ public class Player : Character
 		GetInputs();
 		SetPlayerState();
 		PlayAnimation();
+		if(m_Grounded && crouch)
+        {
+			crouchTimer += addedTimeOnCrouch * Time.deltaTime;
+			if (crouchTimer >= 1.5f)
+				crouchTimer = 1.5f;
+		}
+		else
+        {
+			crouchTimer = 1f;
+		}
 	}
 
     private void FixedUpdate()
@@ -227,9 +241,11 @@ public class Player : Character
 		// If the player should jump...
 		if (m_Grounded && jump)
 		{
+			CreateDust();
 			// Add a vertical force to the player.
 			m_Grounded = false;
-			rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpVelocity);
+			float totalJumpVelocity = jumpVelocity * crouchTimer;
+			rigidBody.velocity = new Vector2(rigidBody.velocity.x, totalJumpVelocity);
 			//rigidBody.AddForce(new Vector2(0f, m_JumpForce));
 			jump = false;
 		}
@@ -242,5 +258,10 @@ public class Player : Character
 
 		spriteRenderer.flipX = !spriteRenderer.flipX;
 	}
+
+	private void CreateDust()
+    {
+		dust.Play();
+    }
 
 }
