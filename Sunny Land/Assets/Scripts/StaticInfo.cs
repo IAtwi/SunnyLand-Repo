@@ -12,5 +12,7 @@ public class StaticInfo
     public static string mainmenuScene = "MainMenu";
     public static string level1Scene = "Level1";
 
+    // SOUNDS
+    public static string mainthemeaudio = "MainTheme";
 
 }

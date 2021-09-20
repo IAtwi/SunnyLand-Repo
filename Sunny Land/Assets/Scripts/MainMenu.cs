@@ -11,6 +11,10 @@ public class MainMenu : MonoBehaviour
     public Tilemap weeds1;
     public Tilemap weeds2;
 
+    private void Start()
+    {
+        FindObjectOfType<AudioManager>().PlayAudio(StaticInfo.mainthemeaudio);
+    }
 
     private void Update()
     {
