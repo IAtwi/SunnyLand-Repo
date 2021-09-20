@@ -43,14 +43,29 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
+  - name: Background1
     uniqueID: 4270073227
     locked: 0
-  - name: Back
+  - name: Background2
     uniqueID: 1284436349
     locked: 0
-  - name: Front
+  - name: Background3
+    uniqueID: 2051909997
+    locked: 0
+  - name: Background4
+    uniqueID: 2931853833
+    locked: 0
+  - name: Front1
     uniqueID: 2163832177
+    locked: 0
+  - name: Front2
+    uniqueID: 2958288273
+    locked: 0
+  - name: Front3
+    uniqueID: 3145042587
+    locked: 0
+  - name: Front4
+    uniqueID: 87848103
     locked: 0
   - name: OnScreen
     uniqueID: 656560817
