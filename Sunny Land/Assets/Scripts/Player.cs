@@ -20,30 +20,25 @@ public class Player : Character
 	private ParticleSystem dust;
 
 	private float crouchTimer = 1f;
-	private const float maxCrouchTimer = 1.5f;
 	private float addedTimeOnCrouch = 0.7f;
 	private float velocityAddedWhenDamaged = 7f;
 	private float timeForHurt = 0.65f;
-	private bool isTakingDamage = false;
 	private float horizontalMovement = 0f;
-    private bool wantToJump= false;
+	private const float maxCrouchTimer = 1.5f;
+	private const float k_CeilingRadius = .2f;  // Radius of the overlap circle to determine if the player can stand up
+	private const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
+	private bool isTakingDamage = false;
+	private bool wantToJump= false;
     private bool jump = false;
     private bool crouch = false;
-	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
-	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
 	private bool m_wasCrouching = false;
+	private int health;
+	private int maxHealth = 1;
+
 	private Vector3 m_Velocity = Vector3.zero;
 
-	[Header("Events")]
-	[Space]
-	public UnityEvent OnLandEvent;
-	[System.Serializable]
-	public class BoolEvent : UnityEvent<bool> { }
-	public BoolEvent OnCrouchEvent;
 
-
-    
     private void Awake()
     {
 		rigidBody = GetComponent<Rigidbody2D>();
@@ -53,14 +48,13 @@ public class Player : Character
 		m_CeilingCheck = transform.GetChild(0).transform;
 		m_GroundCheck = transform.GetChild(1).transform;
 
-
-		if (OnLandEvent == null)
-			OnLandEvent = new UnityEvent();
-
-		if (OnCrouchEvent == null)
-			OnCrouchEvent = new BoolEvent();
-
 	}
+
+    private void Start()
+    {
+		health = maxHealth;
+		EventManager.OnPlayerDie += PlayerDie;
+    }
 
     private void Update()
     {
@@ -92,26 +86,18 @@ public class Player : Character
 			if (colliders[i].gameObject != gameObject)
 			{
 				m_Grounded = true;
-				if (!wasGrounded)
-					OnLandEvent.Invoke();
 			}
 		}
 	}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-		if (collision.gameObject.CompareTag(StaticInfo.enemyTag) && !isTakingDamage)
-		{
-			StartCoroutine(TookDamage(collision.transform.position));
-		}
+		CheckIfCollisionWithEnemy(collision);
 	}
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-		if (collision.gameObject.CompareTag(StaticInfo.enemyTag) && !isTakingDamage)
-		{
-			StartCoroutine(TookDamage(collision.transform.position));
-		}
+		CheckIfCollisionWithEnemy(collision);
 	}
 
     private IEnumerator TookDamage(Vector3 enemyPos)
@@ -198,7 +184,6 @@ public class Player : Character
 				if (!m_wasCrouching)
 				{
 					m_wasCrouching = true;
-					OnCrouchEvent.Invoke(true);
 				}
 
 				// Reduce the speed by the crouchSpeed multiplier
@@ -217,7 +202,6 @@ public class Player : Character
 				if (m_wasCrouching)
 				{
 					m_wasCrouching = false;
-					OnCrouchEvent.Invoke(false);
 				}
 			}
 
@@ -252,6 +236,22 @@ public class Player : Character
 		}
 	}
 
+	private void CheckIfCollisionWithEnemy(Collision2D collision)
+    {
+		if (collision.gameObject.CompareTag(StaticInfo.enemyTag) && !isTakingDamage)
+		{
+			health--;
+			if (health <= 0)
+			{
+                EventManager.OnPlayerDie?.Invoke();
+            }
+			else
+			{
+				StartCoroutine(TookDamage(collision.transform.position));
+			}
+		}
+	}
+
 	private void Flip()
 	{
 		// Switch the way the player is labelled as facing.
@@ -265,4 +265,9 @@ public class Player : Character
 		dust.Play();
     }
 
+	private void PlayerDie()
+    {
+		animator.Play("die");
+		Destroy(gameObject);
+	}
 }
