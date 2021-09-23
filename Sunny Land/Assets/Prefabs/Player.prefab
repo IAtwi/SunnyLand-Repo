@@ -4987,12 +4987,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   m_CrouchDisableCollider: {fileID: 8024090434911445307}
-  OnLandEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCrouchEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!95 &1941541700
 Animator:
   serializedVersion: 3

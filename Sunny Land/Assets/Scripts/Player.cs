@@ -33,6 +33,7 @@ public class Player : Character
     private bool crouch = false;
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	private bool m_wasCrouching = false;
+	private bool playerDied = false;
 	private int health;
 	private int maxHealth = 1;
 
@@ -53,14 +54,16 @@ public class Player : Character
     private void Start()
     {
 		health = maxHealth;
-		EventManager.OnPlayerDie += PlayerDie;
     }
 
     private void Update()
     {
-		GetInputs();
-		SetPlayerState();
-		PlayAnimation();
+		if(!playerDied)
+        {
+			GetInputs();
+			SetPlayerState();
+			PlayAnimation();
+		}
 		if(m_Grounded && crouch)
         {
 			crouchTimer += addedTimeOnCrouch * Time.deltaTime;
@@ -267,7 +270,25 @@ public class Player : Character
 
 	private void PlayerDie()
     {
+		playerDied = true;
+		rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
 		animator.Play("die");
+	}
+
+	private void DestroyPlayer()
+    {
 		Destroy(gameObject);
+		GameManager.LoadScene(StaticInfo.level1Scene);
+	}
+
+    private void OnEnable()
+    {
+		EventManager.OnPlayerDie += PlayerDie;
+	}
+
+    private void OnDestroy()
+    {
+		EventManager.OnPlayerDie -= PlayerDie;
+
 	}
 }
