@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 using System.Collections;
 
 public class Player : Character
@@ -35,7 +34,7 @@ public class Player : Character
 	private bool m_wasCrouching = false;
 	private bool playerDied = false;
 	private int health;
-	private int maxHealth = 1;
+	private int maxHealth = 2;
 
 	private Vector3 m_Velocity = Vector3.zero;
 
@@ -255,19 +254,20 @@ public class Player : Character
 		}
 	}
 
+	// Switch the way the player is labelled as facing.
 	private void Flip()
 	{
-		// Switch the way the player is labelled as facing.
 		facingRight = !facingRight;
-
 		spriteRenderer.flipX = !spriteRenderer.flipX;
 	}
 
+	// Create dust 
 	private void CreateDust()
     {
 		dust.Play();
     }
 
+	// Player has died
 	private void PlayerDie()
     {
 		playerDied = true;
@@ -275,18 +275,21 @@ public class Player : Character
 		animator.Play("die");
 	}
 
+	// Called after the death animation ends
 	private void DestroyPlayer()
     {
 		Destroy(gameObject);
 		GameManager.LoadScene(StaticInfo.level1Scene);
 	}
 
+	// Add functions to delegate
     private void OnEnable()
     {
 		EventManager.OnPlayerDie += PlayerDie;
 	}
 
-    private void OnDestroy()
+	// Remove functions from delegate
+	private void OnDestroy()
     {
 		EventManager.OnPlayerDie -= PlayerDie;
 

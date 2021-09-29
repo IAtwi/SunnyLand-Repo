@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class MainCanvas : MonoBehaviour
 {
-    private bool gameIsPaused = false;
-
     public GameObject mainPanel;
     public GameObject pausePanel;
+
+
+    bool gameIsPaused = false;
+
 
 
     private void Update()
@@ -23,12 +25,22 @@ public class MainCanvas : MonoBehaviour
         }
     }
 
+    // Pause the game
     public void Pause()
     {
         gameIsPaused = true;
         Time.timeScale = 0f;
         mainPanel.SetActive(false);
         pausePanel.SetActive(true);
+    }
+
+    // Resume the game
+    public void Resume()
+    {
+        gameIsPaused = false;
+        Time.timeScale = 1f;
+        pausePanel.SetActive(false);
+        mainPanel.SetActive(true);
     }
 
     public void OpenMainMenu()
@@ -38,11 +50,5 @@ public class MainCanvas : MonoBehaviour
         GameManager.LoadScene(StaticInfo.mainmenuScene);
     }
 
-    public void Resume()
-    {
-        gameIsPaused = false;
-        Time.timeScale = 1f;
-        pausePanel.SetActive(false);
-        mainPanel.SetActive(true);
-    }
+   
 }
